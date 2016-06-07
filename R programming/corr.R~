@@ -20,7 +20,7 @@ corr <- function(directory, threshold = 0) {
 	
 		filename <- paste(directory, text, sep="")
 		data <- read.csv(filename)
-		corr[idx] <- cor(data$sulfate, data$nitrate)
+		corr[idx] <- cor(data$sulfate, data$nitrate, use='complete.obs')
 	}
 	return(corr)
 }

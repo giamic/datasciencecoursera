@@ -1,4 +1,5 @@
 complete <- function(directory, id = 1:332){
+	## Calculate the number of complete observations across monitors list
 	## Return a data frame of the form:
 	## id nobs
 	## 1  117

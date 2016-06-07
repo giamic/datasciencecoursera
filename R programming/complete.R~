@@ -19,5 +19,5 @@ complete <- function(directory, id = 1:332){
 		data <- read.csv(filename)
 		nobs[idx] <- sum(complete.cases(data))
 	}
-	data.frame(id, n.complete)
+	data.frame(id, nobs)
 }
