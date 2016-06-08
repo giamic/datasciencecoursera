@@ -1,0 +1,30 @@
+best <- function(state, outcome) {
+	## Read outcome data
+	data <- read.csv("./outcome-of-care-measures.csv")
+	possible.states <- unique(data$State)
+	possible.outcomes <- c("heart attack", "heart failure", "pneumonia")
+
+	## Check that state and outcome are valid
+	if (all(state != possible.states)) {
+		stop("invalid state")
+	}
+	if (all(outcome != possible.outcomes)) {
+		stop("invalid outcome")
+	}
+
+	## Choose which columns are interesting
+	if (outcome=="heart attack"){choose <- 11}     #"Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack"
+	if (outcome=="heart failure"){choose <- 17}    #"Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure"
+	if (outcome=="pneumonia"){choose <- 23}        #"Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia"
+	data.sub <- subset(data, State==state, c(Hospital.Name, choose))
+
+	## Tidy the data and remove unwanted rows
+	data.sub[data.sub=="Not Available"] <- NA
+	data.sub <- data.sub[complete.cases(data.sub), ]
+	data.sub[, 2] <- as.numeric(as.character(data.sub[, 2]))
+
+	## Return hospital name in that state with lowest 30-day death rate
+	data.ord <- data.sub[order(data.sub[, 2], data.sub[, 1]), ]
+	res <- data.ord[1,"Hospital.Name"]
+	res
+}
